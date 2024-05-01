@@ -81,6 +81,24 @@ export const nodes = [
     selectable: false,
     position: { x: 150, y: 400 },
   },
+  {
+    id: "8",
+    type: "counterNode",
+    position: { x: 300, y: 100 },
+    data: {
+      initialCount: 1,
+    },
+    sourcePosition: "top",
+    targetPosition: "button",
+  },
+  {
+    id: "9",
+    type: "TextNode",
+    position: { x: 200, y: 600 },
+    data: {
+      value: "Quan",
+    },
+  },
 ];
 
 export const edges = [

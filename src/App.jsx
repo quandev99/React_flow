@@ -17,9 +17,13 @@ import "reactflow/dist/style.css";
 import "./index.css";
 import "./App.css";
 import CustomNode from "./CustomNode";
+import CounterNode from "./CounterNode";
+import CustomTextUpdaterNode from "./CustomTextUpdaterNode";
 
 const nodeTypes = {
   custom: CustomNode,
+  counterNode: CounterNode,
+  TextNode: CustomTextUpdaterNode,
 };
 
 const minimapStyle = {

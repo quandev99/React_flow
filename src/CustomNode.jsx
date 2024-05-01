@@ -61,8 +61,8 @@ function Select({ value, handleId, nodeId }) {
   );
 }
 
-function CustomNode({ id, data }) {
-  // console.log("CustomNode", id, data);
+function CustomNode({ id, data ,...props}) {
+  // console.log("CustomNode", id, data, props);
   return (
     <>
       <div className="custom-node__header">
