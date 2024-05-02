@@ -1,60 +1,52 @@
-import { useCallback } from 'react';
-import ReactFlow, { addEdge, useNodesState, useEdgesState } from 'reactflow';
-import CustomEdge from './CustomEdge';
+import React, { useCallback } from 'react';
+import ReactFlow, {
+  ReactFlowProvider,
+  useNodesState,
+  useEdgesState,
+  useReactFlow,
+} from 'reactflow';
 
+import { initialNodes, initialEdges } from './nodes-edges.js';
 import 'reactflow/dist/style.css';
-const styles = {
-  background: "red",
-  width: "100%",
-  height: 300,
-};
-const initialNodes = [
-  { id: 'a', position: { x: 0, y: 0 }, data: { label: 'Node A' } },
-  { id: 'b', position: { x: 0, y: 100 }, data: { label: 'Node B' } },
-  { id: 'c', position: { x: 0, y: 200 }, data: { label: 'Node C' } },
-];
 
-const initialEdges = [
-  { id: "a->b", type: "custom-edge", source: "a", target: "b" },
-  {
-    id: "b->c",
-    type: "custom-edge",
-    source: "b",
-    target: "c",
-  },
-];
-
-const edgeTypes = {
-  'custom-edge': CustomEdge,
+const getLayoutedElements = (nodes, edges) => {
+  return { nodes, edges };
 };
 
-function Flow() {
+const LayoutFlow = () => {
+  const { fitView } = useReactFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const onConnect = useCallback(
-    (connection) => {
-      const edge = { ...connection, type: 'custom-edge' };
-      setEdges((eds) => addEdge(edge, eds));
-    },
-    [setEdges],
-  );
+
+  const onLayout = useCallback(() => {
+    const layouted = getLayoutedElements(nodes, edges);
+
+    setNodes([...layouted.nodes]);
+    setEdges([...layouted.edges]);
+
+    window.requestAnimationFrame(() => {
+      fitView();
+    });
+  }, [nodes, edges]);
 
   return (
-    <div style={{ height: 500 }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        edgeTypes={edgeTypes}
-        style={styles}
-        fitView
-      />
-    </div>
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      fitView
+    />
+  );
+};
+
+export default function () {
+  return (
+    <ReactFlowProvider>
+      <LayoutFlow />
+    </ReactFlowProvider>
   );
 }
 
-export default Flow;
 
    
